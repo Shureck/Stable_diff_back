@@ -33,5 +33,5 @@ jobs:
             key: ${{ secrets.VIRTUAL_KEY }}
             run: |
               cd forCiCD
-              docker-compose pull
-              docker-compose up -d
+              sudo docker compose pull
+              sudo docker compose up -d
