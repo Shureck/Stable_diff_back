@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+
+  web:
+    build: .
+#    image: shureck/forcicd:latest
+    restart: always
+
+    command: uvicorn test:app --reload --host 0.0.0.0
+    volumes:
+        - ./images/:/usr/src/images/
+
+    ports:
+      - 8280:8000
