@@ -78,7 +78,7 @@ async def get_pic(text, steps=30, mask_blur=4,denoising_strength=0.51,cfg_scale=
 
     steps = steps
     text = text
-    URL = "https://f285-193-41-142-48.ngrok.io/"
+    URL = "https://d373-193-41-142-48.ngrok.io/"
     from base64 import b64decode, b64encode
 
     image = io.imread('samples/hall.jpg')
@@ -146,7 +146,7 @@ async def get_list():
 
 
 async def create_pic(name, json):
-    URL = "https://f285-193-41-142-48.ngrok.io"
+    URL = "https://d373-193-41-142-48.ngrok.io"
     res = requests.post(URL+'/sdapi/v1/img2img', headers={"Content-Type": 'application/json'}, json=json)
     from base64 import b64decode, b64encode
 
