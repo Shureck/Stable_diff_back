@@ -78,7 +78,7 @@ async def get_pic(text, steps=30, mask_blur=4,denoising_strength=0.51,cfg_scale=
 
     steps = steps
     text = text
-    URL = "https://af26-193-41-142-48.ngrok.io"
+    URL = "https://f285-193-41-142-48.ngrok.io/"
     from base64 import b64decode, b64encode
 
     image = io.imread('samples/hall.jpg')
