@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webcam Test</title>
+  </head>
+  <body>
+    <select id="deviceSelect"></select>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button type="button" onclick="takeSnapshot()">Take Snapshot</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img id="image" src="" alt="webcam image" style="display: none;">
+    <script>
+      var deviceSelect = document.querySelector("#deviceSelect");
+      var video = document.querySelector("#video");
+      var canvas = document.querySelector("#canvas");
+      var ctx = canvas.getContext("2d");
+      var img = document.querySelector("#image");
+
+      navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+          devices.forEach(function(device) {
+            if (device.kind === "videoinput") {
+              var option = document.createElement("option");
+              option.value = device.deviceId;
+              option.text = device.label || "Camera " + (deviceSelect.length + 1);
+              deviceSelect.appendChild(option);
+            }
+          });
+
+          startStream(devices[0].deviceId);
+        })
+        .catch(function(err) {
+          console.log("An error occurred: " + err);
+        });
+
+      deviceSelect.addEventListener("change", function() {
+        var deviceId = deviceSelect.value;
+        startStream(deviceId);
+      });
+
+      function startStream(deviceId) {
+        navigator.mediaDevices.getUserMedia({ video: { deviceId: deviceId } })
+          .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch(function(err) {
+            console.log("An error occurred: " + err);
+          });
+      }
+
+      function takeSnapshot() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function(blob) {
+            var formData = new FormData();
+            formData.append("webImg", blob, "webImg.png");
+            fetch("http://localhost:8000/webimg", {
+            method: "POST",
+            body: formData
+            })
+            .then(function(response) {
+                if (response.status === 200) {
+                  response.blob().then(function(blob) {
+                    var objectURL = URL.createObjectURL(blob);
+                    img.style.display = "block";
+                    img.src = objectURL;
+                  });
+                } else {
+                  console.log("An error occurred while sending the image.");
+                }
+            })
+            .catch(function(err) {
+                console.log("An error occurred while sending the image: " + err);
+            });
+        }, "image/png");
+        }
+    </script>
+  </body>
+</html>

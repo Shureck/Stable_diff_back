@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Build output
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environment
+venv/
+env/
+ENV/
+.Python
+pip-selfcheck.json
+
+# IDE settings
+.idea/
+.vscode/
+
+# Other
+.DS_Store
+*.swp
+*.swo
+images/
+samples/
