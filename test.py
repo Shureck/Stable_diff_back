@@ -146,7 +146,7 @@ async def get_list():
 
 
 async def create_pic(name, json):
-    URL = "https://af26-193-41-142-48.ngrok.io"
+    URL = "https://f285-193-41-142-48.ngrok.io"
     res = requests.post(URL+'/sdapi/v1/img2img', headers={"Content-Type": 'application/json'}, json=json)
     from base64 import b64decode, b64encode
 
