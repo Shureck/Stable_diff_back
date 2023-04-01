@@ -12,6 +12,7 @@ import requests
 from pydantic import BaseModel
 import uuid
 import os
+from os import path
 import asyncio
 import threading
 
@@ -29,7 +30,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/images", StaticFiles(directory="images"), name="images")
+back_path = path.abspath(path.join(__file__, "../")
+                         ).replace("\\", "/") + '/images'
+
+app.mount("/images", StaticFiles(directory=back_path), name="images")
 
 @app.post("/load_picture")
 async def get_pic(width:int, height:int, file: bytes = File()):
@@ -136,7 +140,7 @@ async def get_pic(text, steps=30, mask_blur=4,denoising_strength=0.51,cfg_scale=
 @app.get("/get_list")
 async def get_list():
     #Получаем список файлов в папке images
-    files = os.listdir('images')
+    files = os.listdir(back_path)
     #Верни файлы в формате Json
     return JSONResponse(content=files)
 
@@ -151,7 +155,7 @@ async def create_pic(name, json):
 
     #Сгенерировать UUID и сохранить картинку с этим именем
 
-    with open("images/"+name+".jpg", "wb") as f:
+    with open(back_path+"/"+name+".jpg", "wb") as f:
         f.write(b64decode(res.json()["images"][0]))
 
 def between_callback(name, json):
