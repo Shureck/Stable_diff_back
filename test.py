@@ -35,6 +35,12 @@ back_path = path.abspath(path.join(__file__, "../")
 
 app.mount("/images", StaticFiles(directory=back_path), name="images")
 
+
+back_path1 = path.abspath(path.join(__file__, "../")
+                         ).replace("\\", "/") + '/'
+
+app.mount("/web_sample", StaticFiles(directory=back_path1), name="web_sample")
+
 @app.post("/load_picture")
 async def get_pic(width:int, height:int, file: bytes = File()):
     with open("samples/work.jpg", 'wb') as i:
